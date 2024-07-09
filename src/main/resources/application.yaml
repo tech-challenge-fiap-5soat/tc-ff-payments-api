@@ -1,0 +1,40 @@
+#spring.application.name=payments-api
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      force: true
+spring:
+  application:
+    name: payments-api
+  datasource:
+    url: jdbc:h2:mem:database
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-ui
+  mvc:
+    throw-exception-if-no-handler-found: true
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true
+    path: /swagger-ui.html
+    operations-sorter: method
+    tags-sorter: alpha
+    display-request-duration: true
+    enabled: true
+swagger-servers-urls: http://localhost:${server.port}${server.servlet.context-path},http://127.0.0.1:${server.port}${server.servlet.context-path}
