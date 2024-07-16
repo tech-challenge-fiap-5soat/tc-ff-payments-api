@@ -2,7 +2,6 @@ name: Code Coverage
 
 on:
   pull_request:
-    branches: [ "master" ]
   push:
     branches: [ "master" ]
 
@@ -27,8 +26,8 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}   # Generate a token on Sonarcloud.io, add it to the secrets of this repo with the name SONAR_TOKEN (Settings > Secrets > Actions > add new repository secret)
         with:
           args:
-            -Dsonar.projectKey=com.tc.ff.payments-api
-            -Dsonar.organization=sk
+            -Dsonar.projectKey=tech-challenge-fiap-5soat_tc-ff-payments-api
+            -Dsonar.organization=tech-challenge-fiap-5soat
 
 #jobs:
 #  build:
