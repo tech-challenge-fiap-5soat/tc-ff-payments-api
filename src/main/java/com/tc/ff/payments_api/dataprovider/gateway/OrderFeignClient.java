@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @FeignClient(value = "order-api", url = "${order-api.service.url}")
 public interface OrderFeignClient {
 
-//    @FeignClient(name = "orderService", url = "${order.service.url}")
-//    public interface OrderClient {
-//
-//        @PatchMapping("/order/{id}/status/{status}")
-//        void updateOrderStatus(@PathVariable("id") Long orderId, @PathVariable("status") String status);
-//    }
+    //    @FeignClient(name = "orderService", url = "${order.service.url}")
+    //    public interface OrderClient {
+    //
+    //        @PatchMapping("/order/{id}/status/{status}")
+    //        void updateOrderStatus(@PathVariable("id") Long orderId, @PathVariable("status") String status);
+    //    }
     @RequestMapping(method = RequestMethod.PUT, value = "/order/{orderId}/status/{status}")
     void udatePaymentStatus(@PathVariable("orderId") String orderId, @PathVariable("status") PaymentStatus status);
-
 }
