@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private void publishPaymentEvent(Payment payment) {
         var orderEvent = Order.builder()
-                .id(UUID.randomUUID().toString())
+                .id(payment.getOrderId())
                 .amount(payment.getAmount())
                 .build();
 
