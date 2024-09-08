@@ -2,6 +2,8 @@ package com.tc.ff.payments_api.dataprovider.messaging;
 
 import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.GetQueueUrlResult;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tc.ff.payments_api.core.domain.entity.PaymentEvent;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,12 +22,22 @@ public class PaymentEventPublisher {
         this.objectMapper = objectMapper;
     }
 
-    public void publishMessage(PaymentEvent paymentEvent) {
+    public SendMessageResult publishMessage(PaymentEvent paymentEvent) {
+        SendMessageResult sendMessageResult = null;
         try {
             GetQueueUrlResult queueUrl = amazonSQSClient.getQueueUrl(this.queueName);
-            amazonSQSClient.sendMessage(queueUrl.getQueueUrl(), objectMapper.writeValueAsString(paymentEvent));
+
+            SendMessageRequest sendMessageRequest = new SendMessageRequest()
+                    .withQueueUrl(queueUrl.getQueueUrl())
+                    .withMessageBody(objectMapper.writeValueAsString(paymentEvent))
+                    .withDelaySeconds(10);
+
+            sendMessageResult = amazonSQSClient.sendMessage(sendMessageRequest);
+            return sendMessageResult;
         } catch (Exception e) {
             System.out.println("Queue Exception Message: " + e.getMessage());
+            return sendMessageResult;
         }
+
     }
 }
