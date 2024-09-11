@@ -1,5 +1,16 @@
 # The tc-ff-payments-api
 
+## Project Overview
+
+Fiap Tech Fast Food is a system designed to manage a neighborhood fast food restaurant. The system allows for user registration, product management, order creation, and payment processing. It is built to be resilient to failures and scalable.
+
+This service is responsible for
+ - Payment processing
+ - Payment gateway integration
+ - Notification of payment approval
+ - Notification of payment rejection
+
+ The system is built to be fault resilient and scalable, allowing the kitchen to operate efficiently even during periods of high order volume.
 
 ## Badges
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tech-challenge-fiap-5soat_tc-ff-payments-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=tech-challenge-fiap-5soat_tc-ff-payments-api)
