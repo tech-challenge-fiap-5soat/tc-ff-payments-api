@@ -75,6 +75,6 @@ public class PaymentServiceImpl implements PaymentService {
                 .order(orderEvent)
                 .build();
 
-        var result = paymentEventPublisher.publishMessage(paymentEvent);
+        paymentEventPublisher.publishMessage(paymentEvent);
     }
 }

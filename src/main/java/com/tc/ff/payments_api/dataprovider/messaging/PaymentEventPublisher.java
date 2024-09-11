@@ -38,6 +38,5 @@ public class PaymentEventPublisher {
             System.out.println("Queue Exception Message: " + e.getMessage());
             return sendMessageResult;
         }
-
     }
 }
