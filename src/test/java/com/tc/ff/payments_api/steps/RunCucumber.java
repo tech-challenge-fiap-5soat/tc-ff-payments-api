@@ -1,6 +1,6 @@
-package com.tc.ff.payments_api.steps;
+// package com.tc.ff.payments_api.steps;
 
-import org.junit.platform.suite.api.*;
+// import org.junit.platform.suite.api.*;
 
 // @Suite
 // @IncludeEngines("cucumber")

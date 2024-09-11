@@ -6,16 +6,16 @@ import static com.tc.ff.payments_api.entrypoint.controller.payload.request.Regis
 import static com.tc.ff.payments_api.entrypoint.controller.payload.request.UpdateRegisteredPaymentRequestTestUtils.getRequestUpdateRegisteredPaymentApproved;
 import static com.tc.ff.payments_api.entrypoint.controller.payload.request.UpdateRegisteredPaymentRequestTestUtils.getRequestUpdateRegisteredPaymentRefused;
 import static com.tc.ff.payments_api.entrypoint.controller.payload.response.PaymentResponseTestUtils.getPaymentResponse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import com.tc.ff.payments_api.common.exception.BusinessException;
 import com.tc.ff.payments_api.core.domain.entity.Payment;
+import com.tc.ff.payments_api.core.domain.entity.PaymentEvent;
 import com.tc.ff.payments_api.core.domain.mapper.PaymentMapper;
 import com.tc.ff.payments_api.core.service.impl.PaymentServiceImpl;
 import com.tc.ff.payments_api.dataprovider.gateway.OrderFeignClient;
+import com.tc.ff.payments_api.dataprovider.messaging.PaymentEventPublisher;
 import com.tc.ff.payments_api.dataprovider.repository.PaymentRepository;
 import com.tc.ff.payments_api.entrypoint.controller.payload.request.RegisterPendingPaymentRequest;
 import com.tc.ff.payments_api.entrypoint.controller.payload.request.UpdateRegisteredPaymentRequest;
@@ -23,6 +23,7 @@ import com.tc.ff.payments_api.entrypoint.controller.payload.response.PaymentResp
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -41,6 +42,9 @@ class PaymentServiceTest {
 
     @InjectMocks
     private PaymentServiceImpl paymentService;
+
+    @Mock
+    private PaymentEventPublisher paymentEventPublisher;
 
     private static final String MSG_UNABLE_TO_FIND_PAYMENT_BY_FOLLOW_ID = "Unable to find payment by the %s id";
 
@@ -79,7 +83,13 @@ class PaymentServiceTest {
         verify(repository).findPaymentByOrderId(orderId);
         verify(repository).save(paymentEntity);
         verify(mapper).paymentEntityToPaymentResponse(paymentEntity);
-        verify(orderClient).udatePaymentStatus(orderId, request.status());
+
+        ArgumentCaptor<PaymentEvent> eventCaptor = ArgumentCaptor.forClass(PaymentEvent.class);
+        verify(paymentEventPublisher).publishMessage(eventCaptor.capture());
+        PaymentEvent capturedEvent = eventCaptor.getValue();
+        assertNotNull(capturedEvent);
+        assertEquals(paymentEntity.getAmount(), capturedEvent.getOrder().getAmount());
+        assertEquals("PAYMENT_APPROVED", capturedEvent.getEventType());
     }
 
     @Test

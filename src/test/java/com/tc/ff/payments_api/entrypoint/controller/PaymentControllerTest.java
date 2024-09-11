@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tc.ff.payments_api.common.config.TestSecutiryConfig;
 import com.tc.ff.payments_api.core.service.PaymentService;
 import com.tc.ff.payments_api.entrypoint.controller.payload.request.RegisterPendingPaymentRequest;
 import java.util.stream.Stream;
@@ -24,9 +25,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest
+@Import(TestSecutiryConfig.class)
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Tests of PaymentControllerController")
 class PaymentControllerTest {

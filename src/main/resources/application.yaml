@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8079
   servlet:
     context-path: /api
     encoding:
@@ -8,7 +8,7 @@ spring:
   application:
     name: payments-api
   datasource:
-    url: jdbc:postgresql://192.168.42.117:5432/payments
+    url: jdbc:postgresql://172.21.0.2:5432/payments
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
@@ -39,4 +39,11 @@ feign:
     config:
       order-api:
         service:
-          url:
+          url: http://localhost:8078/api/v1
+
+aws:
+  queues:
+    Region: "sa-east-1"
+    Endpoint: http://localhost:4566
+    PaymentEventsQueue: "PaymentEvents"
+    OrderEventsQueue: "OrderEvents"
